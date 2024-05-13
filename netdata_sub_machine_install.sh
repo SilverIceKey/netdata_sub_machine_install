@@ -43,17 +43,13 @@ cat <<EOF | sudo tee /etc/netdata/stream.conf
     enabled = yes
     destination = $MASTER_URL
     api key = $API_KEY
-    timeout seconds = 60
-    default port = 19999
-    buffer size bytes = 1048576
-    reconnect delay seconds = 5
-    initial clock resync iterations = 60
-    hostname = $MACHINE_NAME
-    machine guid = $MACHINE_UUID
 EOF
 
 # 关闭 Netdata 的 Web 界面
 sudo tee /etc/netdata/netdata.conf > /dev/null <<EOT
+[global]
+    memory mode = none
+    hostname = ${MACHINE_NAME}
 [web]
     mode = none
 EOT
@@ -63,11 +59,9 @@ sudo systemctl restart netdata
 
 # 输出必要的配置信息
 echo "请按以下信息配置您的主 Netdata 服务器中的 stream.conf 文件："
-echo "[${MACHINE_NAME}]"
+echo "[${API_KEY}]"
 echo "    enabled = yes"
-echo "    api key = $API_KEY"
-echo "    default port = 19999"
-echo "    buffer size bytes = 1048576"
-echo "    reconnect delay seconds = 5"
-echo "    hostname = ${MACHINE_NAME}"
-echo "    machine guid = ${MACHINE_UUID}"
+echo "    default history = 3600"
+echo "    default memory mode = save"
+echo "    health enabled by default = auto"
+echo "    allow from = *"
