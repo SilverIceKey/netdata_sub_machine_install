@@ -35,7 +35,7 @@ MACHINE_UUID=$(uuidgen)
 MACHINE_NAME=$(hostname)
 
 # 安装 Netdata
-bash <(curl -Ss https://my-netdata.io/kickstart.sh) --non-interactive --disable-telemetry
+wget -O /tmp/netdata-kickstart.sh https://get.netdata.cloud/kickstart.sh && sh /tmp/netdata-kickstart.sh
 
 # 配置从服务器向主服务器的 stream
 cat <<EOF | sudo tee /etc/netdata/stream.conf
